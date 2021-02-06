@@ -101,9 +101,9 @@ Preferably, submit documentation changes by pull request. However, feel free to 
 
 This project is licensed under the BSD 3-Clause License. For details, please read the [LICENSE](https://github.com/profburke/komapainter/blob/master/LICENSE) file.
 
-## A real life story of how the sausage is made
+<a name="tale"></a>## A real life story of how the sausage is made
 
-<a name="tale"></a>A quick `gem install shogi_koma` to install Yokoyama's code yielded a bunch of unappealing errors while trying to compile the Cairo graphics library. I decided I really didn't want to trace through logfiles and try and determine what the issue was (*lazy*).
+A quick `gem install shogi_koma` to install Yokoyama's code yielded a bunch of unappealing errors while trying to compile the Cairo graphics library. I decided I really didn't want to trace through logfiles and try and determine what the issue was (*lazy*).
 
 The essence of the piece-drawing code wasn't too many lines and I seemed to recall that there was a Cairo binding for one of my favorite languages, [Lua](https://lua.org). So I figured 5-10 minutes worth of effort and I could have a working program (*hubris*).
 
