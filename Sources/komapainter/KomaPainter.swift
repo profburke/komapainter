@@ -24,20 +24,14 @@ import CoreText
 import Foundation
 
 public struct KomaPainter {
-    let borderColor: CGColor
-    let borderWidth: CGFloat
-    let fillColor: CGColor
     let isPromoted: Bool
     let name: String
+    let style: PainterStyle
 
-    // TODO: deal with promoted color
-    // TODO: normal name color as a param?
     public init(name: String, isPromoted: Bool = false, style: PainterStyle = .defaultStyle) {
         self.name = name
         self.isPromoted = isPromoted
-        borderColor = style.borderColor
-        borderWidth = style.borderWidth
-        fillColor = style.fillColor
+        self.style = style
     }
 
     public func draw(on context: CGContext, in bounds: CGRect) {
@@ -57,9 +51,9 @@ public struct KomaPainter {
     }
 
     private func configure(_ context: CGContext) {
-        context.setLineWidth(borderWidth)
-        context.setStrokeColor(borderColor)
-        context.setFillColor(fillColor)
+        context.setLineWidth(style.borderWidth)
+        context.setStrokeColor(style.borderColor)
+        context.setFillColor(style.fillColor)
     }
 
     private func scale(_ point: CGPoint, to size: CGSize) -> CGPoint {
@@ -86,8 +80,18 @@ public struct KomaPainter {
         let path = CGMutablePath()
         path.addRect(bounds)
 
-        let key = NSAttributedString.Key("NSFont")
-        let astr = NSAttributedString(string: character, attributes: [key: font])
+        let fontKey = NSAttributedString.Key("NSFont")
+        let textColorKey = NSAttributedString.Key("NSColor")
+
+        var attributes: [NSAttributedString.Key: Any] = [fontKey: font]
+        if isPromoted {
+            attributes[textColorKey] = style.promotedColor
+        } else {
+            attributes[textColorKey] = style.nameColor
+        }
+        
+        let astr = NSAttributedString(string: character, attributes: attributes)
+
         let framesetter = CTFramesetterCreateWithAttributedString(astr)
         let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 1), path, nil)
 

@@ -22,8 +22,8 @@
 import CoreGraphics
 import Foundation
 
-if CommandLine.arguments.count != 3 {
-    print("usage: komapainter <pieceName> <fileName>")
+if CommandLine.arguments.count != 3 && CommandLine.arguments.count != 4 {
+    print("usage: komapainter [-p] <pieceName> <fileName>")
     exit(1)
 }
 
@@ -41,7 +41,22 @@ guard let ctx = CGContext(data: nil, width: 200, height: 200,
 }
 
 let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
-let painter = KomaPainter(name: CommandLine.arguments[1])
+
+let name: String
+let path: String
+let promoted: Bool
+// TODO: really should check that the argument IS "-p"
+if CommandLine.arguments.count == 4 {
+    promoted = true
+    name = CommandLine.arguments[2]
+    path = CommandLine.arguments[3]
+} else {
+    promoted = false
+    name = CommandLine.arguments[1]
+    path = CommandLine.arguments[2]
+}
+
+let painter = KomaPainter(name: name, isPromoted: promoted)
 painter.draw(on: ctx, in: rect)
 
 guard let image = ctx.makeImage() else {
@@ -49,7 +64,7 @@ guard let image = ctx.makeImage() else {
     exit(1)
 }
 
-let url = URL(fileURLWithPath: CommandLine.arguments[2])
+let url = URL(fileURLWithPath: path)
 
 if case .failure(let err) = painter.png(from: image, to: url) {
     // TODO: error message
