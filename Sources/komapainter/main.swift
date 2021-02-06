@@ -22,19 +22,22 @@
 import CoreGraphics
 import Foundation
 
-let painter = KomaPainter(name: "竜")
 
-guard let colorspace = CGColorSpace(name: CGColorSpace.sRGB) else { exit(1) }
+guard let colorspace = CGColorSpace(name: CGColorSpace.sRGB) else {
+    print("Couldn't create color space.");
+    exit(1)
+}
+
 guard let ctx = CGContext(data: nil, width: 200, height: 200,
                           bitsPerComponent: 8, bytesPerRow: 0,
                           space: colorspace,
                           bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
-    print("couldn't make colorspace")
+    print("Couldn't create core graphics context.")
     exit(1)
 }
 
 let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
-
+let painter = KomaPainter(name: "竜")
 painter.draw(on: ctx, in: rect)
 
 guard let image = ctx.makeImage() else {
@@ -43,11 +46,5 @@ guard let image = ctx.makeImage() else {
 }
 
 let url = URL(fileURLWithPath: "image2.png")
-guard let destination = CGImageDestinationCreateWithURL(url as CFURL,
-                                                        kUTTypePNG, 1, nil) else {
-    print("oops")
-    exit(1)
-}
+painter.png(from: image, to: url)
 
-CGImageDestinationAddImage(destination, image, nil)
-CGImageDestinationFinalize(destination)

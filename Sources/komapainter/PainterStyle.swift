@@ -33,8 +33,8 @@ public struct PainterStyle {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.fillColor = fillColor
-        set.nameColor = nameColor
-        set.promotedColor = promotedColor
+        self.nameColor = nameColor
+        self.promotedColor = promotedColor
     }
     
     public static var defaultStyle =

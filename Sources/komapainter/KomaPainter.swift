@@ -101,11 +101,22 @@ public struct KomaPainter {
     }
 }
 
+public enum KomaPainterError: Error {
+    case general
+}
+
 extension KomaPainter {
-    public func png(from context: CGContext) -> Data? {
-        // this may need to be specific for UIKit and AppKit
-        // for AppKit representation(using storageType: NSBitmapImageRep.FileType,
-            // properties: [NSBitmapImageRep.PropertyKey : Any]) -> Data?
+    /* Result<Void, KomaPainterError>*/ 
+    public func png(from image: CGImage, to url: URL) -> Data? {
+
+        guard let destination = CGImageDestinationCreateWithURL(url as CFURL,
+                                                                kUTTypePNG, 1, nil) else {
+            print("oops")
+            exit(1)
+        }
+        
+        CGImageDestinationAddImage(destination, image, nil)
+        CGImageDestinationFinalize(destination)
         return nil
     }
 }
