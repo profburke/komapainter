@@ -71,8 +71,10 @@ public struct KomaPainter {
         context.translateBy(x: 0, y: bounds.size.height)
         context.scaleBy(x: 1.0, y: -1.0)
 
+        context.translateBy(x: 0.3 * bounds.size.width, y: -0.32 * bounds.size.height)
+
         if name.count == 1 {
-            let font = CTFontCreateWithName(("Helvetica" as CFString), 72, nil)
+            let font = CTFontCreateWithName(("Helvetica" as CFString), 80, nil)
             draw(character: name, on: context, in: bounds, with: font)
         } else {
             draw(string: name, on: context, in: bounds)
@@ -82,40 +84,22 @@ public struct KomaPainter {
     private func draw(character: String, on context: CGContext, in bounds: CGRect,
                       with font: CTFont) {
         let path = CGMutablePath()
-
-        context.translateBy(x: 0.35 * bounds.size.width, y: -0.28 * bounds.size.height)
-
         path.addRect(bounds)
+
         let key = NSAttributedString.Key("NSFont")
-        let astr = NSAttributedString(string: character,
-                                      attributes: [key:font])
+        let astr = NSAttributedString(string: character, attributes: [key: font])
         let framesetter = CTFramesetterCreateWithAttributedString(astr)
         let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 1), path, nil)
+
         CTFrameDraw(frame, context)
     }
 
     private func draw(string: String, on context: CGContext, in bounds: CGRect) {
-        let font = CTFontCreateWithName(("Helvetica" as CFString), 72/2, nil)
+        let font = CTFontCreateWithName(("Helvetica" as CFString), 96/2, nil)
+        context.translateBy(x: 0.05 * bounds.size.width, y: 0)
         draw(character: String(name.first!), on: context, in: bounds, with: font)
-        draw(character: String(name.last!), on: context, in: bounds, with: font)
-    }
-}
-
-public enum KomaPainterError: Error {
-    case general
-}
-
-extension KomaPainter {
-    public func png(from image: CGImage, to url: URL) -> Result<Void, KomaPainterError> {
-
-        guard let destination =
-        CGImageDestinationCreateWithURL(url as CFURL,
-                                        kUTTypePNG, 1, nil) else {
-            return .failure(.general)
-        }
         
-        CGImageDestinationAddImage(destination, image, nil)
-        CGImageDestinationFinalize(destination)
-        return .success(Void())
+        context.translateBy(x: 0, y: -0.28 * bounds.size.height)
+        draw(character: String(name.last!), on: context, in: bounds, with: font)
     }
 }
