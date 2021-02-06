@@ -96,7 +96,7 @@ public struct KomaPainter {
 
     private func draw(string: String, on context: CGContext, in bounds: CGRect) {
         let font = CTFontCreateWithName(("Helvetica" as CFString), 96/2, nil)
-        context.translateBy(x: 0.05 * bounds.size.width, y: 0)
+        context.translateBy(x: 0.07 * bounds.size.width, y: 0.05 * bounds.size.height)
         draw(character: String(name.first!), on: context, in: bounds, with: font)
         
         context.translateBy(x: 0, y: -0.28 * bounds.size.height)
