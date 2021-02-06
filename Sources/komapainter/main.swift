@@ -22,6 +22,10 @@
 import CoreGraphics
 import Foundation
 
+if CommandLine.arguments.count != 3 {
+    print("usage: komapainter <pieceName> <fileName>")
+    exit(1)
+}
 
 guard let colorspace = CGColorSpace(name: CGColorSpace.sRGB) else {
     print("Couldn't create color space.");
@@ -37,7 +41,7 @@ guard let ctx = CGContext(data: nil, width: 200, height: 200,
 }
 
 let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
-let painter = KomaPainter(name: "竜")
+let painter = KomaPainter(name: CommandLine.arguments[1])
 painter.draw(on: ctx, in: rect)
 
 guard let image = ctx.makeImage() else {
@@ -45,6 +49,12 @@ guard let image = ctx.makeImage() else {
     exit(1)
 }
 
-let url = URL(fileURLWithPath: "image2.png")
-painter.png(from: image, to: url)
+let url = URL(fileURLWithPath: CommandLine.arguments[2])
+
+if case .failure(let err) = painter.png(from: image, to: url) {
+    // TODO: error message
+    print(err)
+    exit(1)
+}
+
 

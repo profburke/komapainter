@@ -106,17 +106,16 @@ public enum KomaPainterError: Error {
 }
 
 extension KomaPainter {
-    /* Result<Void, KomaPainterError>*/ 
-    public func png(from image: CGImage, to url: URL) -> Data? {
+    public func png(from image: CGImage, to url: URL) -> Result<Void, KomaPainterError> {
 
-        guard let destination = CGImageDestinationCreateWithURL(url as CFURL,
-                                                                kUTTypePNG, 1, nil) else {
-            print("oops")
-            exit(1)
+        guard let destination =
+        CGImageDestinationCreateWithURL(url as CFURL,
+                                        kUTTypePNG, 1, nil) else {
+            return .failure(.general)
         }
         
         CGImageDestinationAddImage(destination, image, nil)
         CGImageDestinationFinalize(destination)
-        return nil
+        return .success(Void())
     }
 }
