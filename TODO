@@ -1,0 +1,10 @@
+fix rotation
+improve error reporting and command line argument handling
+
+Future:
+specify colors and other config via a JSON file?
+utility to print out a set of pieces?
+send image to stdout
+read from stdin
+
+(see CGImageDestinationCreateWithData)
