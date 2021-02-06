@@ -19,16 +19,26 @@
 // TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import ArgumentParser
 import CoreGraphics
 import Foundation
+import func Darwin.fputs
+import var Darwin.stderr
 
-if CommandLine.arguments.count != 3 && CommandLine.arguments.count != 4 {
-    print("usage: komapainter [-p] <pieceName> <fileName>")
-    exit(1)
+struct KomapainterOptions: ParsableArguments {
+    @Option(name: .shortAndLong)
+    var name: String
+
+    @Option(name: [.customLong("output"), .short])
+    var outputFileName: String
+
+    @Flag(name: .shortAndLong)
+    var promoted = false
 }
+let options = KomapainterOptions.parseOrExit()
 
 guard let colorspace = CGColorSpace(name: CGColorSpace.sRGB) else {
-    print("Couldn't create color space.");
+    fputs("Couldn't create color space.", stderr);
     exit(1)
 }
 
@@ -36,40 +46,24 @@ guard let ctx = CGContext(data: nil, width: 200, height: 200,
                           bitsPerComponent: 8, bytesPerRow: 0,
                           space: colorspace,
                           bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
-    print("Couldn't create core graphics context.")
+    fputs("Couldn't create core graphics context.", stderr)
     exit(1)
 }
 
 let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
-
-let name: String
-let path: String
-let promoted: Bool
-// TODO: really should check that the argument IS "-p"
-if CommandLine.arguments.count == 4 {
-    promoted = true
-    name = CommandLine.arguments[2]
-    path = CommandLine.arguments[3]
-} else {
-    promoted = false
-    name = CommandLine.arguments[1]
-    path = CommandLine.arguments[2]
-}
-
-let painter = KomaPainter(name: name, isPromoted: promoted)
+let painter = KomaPainter(name: options.name, isPromoted: options.promoted)
 painter.draw(on: ctx, in: rect)
 
 guard let image = ctx.makeImage() else {
-    print("image issue")
+    fputs("Problem creating PNG image from graphics context.", stderr)
     exit(1)
 }
 
-let url = URL(fileURLWithPath: path)
-
+let url = URL(fileURLWithPath: options.outputFileName)
 if case .failure(let err) = painter.png(from: image, to: url) {
-    // TODO: error message
-    print(err)
+    fputs("Error writing file: \(err)", stderr)
     exit(1)
 }
+
 
 
