@@ -37,6 +37,9 @@ public struct KomaPainter {
     public func draw(on context: CGContext, in bounds: CGRect) {
         configure(context)
         let size = bounds.size
+
+        context.translateBy(x: 0, y: bounds.size.height)
+        context.scaleBy(x: 1.0, y: -1.0)
         
         context.beginPath()
         context.move(to: scale(CGPoint(x: 0.2, y: 0.2), to: size))
