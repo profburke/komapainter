@@ -26,10 +26,6 @@ komapainter -h
 
 for more details.
 
-### Current Bug Warning
-
-Currently the images are saved in the wrong orientation. You will need to rotate them 180° and flip horizontally. You can do this using the standard `Preview.app` or almost any image manipulation program.
-
 ### Examples
 
 ```
