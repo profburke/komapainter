@@ -1,6 +1,5 @@
 ### High Priority:
 
-- fix rotation
 - support specifying font
 - For a given bounding box, major pieces should be larger than minor pieces
 
