@@ -71,7 +71,8 @@ public struct KomaPainter {
         context.translateBy(x: 0.3 * bounds.size.width, y: -0.32 * bounds.size.height)
 
         if name.count == 1 {
-            let font = CTFontCreateWithName(("Helvetica" as CFString), 80, nil)
+            let fontSize = bounds.size.height * (2.0/5.0)
+            let font = CTFontCreateWithName(("Helvetica" as CFString), fontSize, nil)
             draw(character: name, on: context, in: bounds, with: font)
         } else {
             draw(string: name, on: context, in: bounds)
@@ -102,7 +103,8 @@ public struct KomaPainter {
     }
 
     private func draw(string: String, on context: CGContext, in bounds: CGRect) {
-        let font = CTFontCreateWithName(("Helvetica" as CFString), 96/2, nil)
+        let fontSize = bounds.size.height * (12.0/50.0)
+        let font = CTFontCreateWithName(("Helvetica" as CFString), fontSize, nil)
         context.translateBy(x: 0.07 * bounds.size.width, y: 0.05 * bounds.size.height)
         draw(character: String(name.first!), on: context, in: bounds, with: font)
         
