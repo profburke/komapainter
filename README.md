@@ -9,16 +9,18 @@ This program is a tale of a programmer's hubris and laziness. You can read my sa
 Assuming the program is installed somewhere in your PATH, usage is simple:
 
 ```
-> komapainter -n 飛車 -o rook.png
+> komapainter -n 飛車 -s 200 -o rook.png
 ```
 
 The first argument is the name of the piece whose image you want to generate. `Komapainter` supports 1 or 2 character piece names. If the name you supply is more than 2 characters long, the first and last character will appear in the image.
 
-The second argument is the name of the file to which the image should be saved. If the file already exists, it will be overwritten.
+The second argument is the size of the bounding box for the image. The default is 200, so you can omit this argument if that value is what you want.
+
+The third argument is the name of the file to which the image should be saved. If the file already exists, it will be overwritten.
 
 Finally, `komapainter` supports a `-p` (*promoted*) option which will write the piece name in red.
 
-`Komapainter` supports short and long option names. Try
+`Komapainter` supports short and long option names. Options can be specified in any order. Try
 
 ```
 komapainter -h
