@@ -5,7 +5,6 @@
 
 ### Medium Priority:
 
-- specify image size via command line
 - specify colors and other config via a JSON file
 - utility to print out a set of pieces (or possibly sub-command)
 
