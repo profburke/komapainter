@@ -34,6 +34,9 @@ struct KomapainterOptions: ParsableArguments {
 
     @Flag(name: .shortAndLong)
     var promoted = false
+
+    @Option(name: .shortAndLong)
+    var size = 200
 }
 let options = KomapainterOptions.parseOrExit()
 
@@ -42,7 +45,7 @@ guard let colorspace = CGColorSpace(name: CGColorSpace.sRGB) else {
     exit(1)
 }
 
-guard let ctx = CGContext(data: nil, width: 200, height: 200,
+guard let ctx = CGContext(data: nil, width: options.size, height: options.size,
                           bitsPerComponent: 8, bytesPerRow: 0,
                           space: colorspace,
                           bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
@@ -50,7 +53,7 @@ guard let ctx = CGContext(data: nil, width: 200, height: 200,
     exit(1)
 }
 
-let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
+let rect = CGRect(x: 0, y: 0, width: options.size, height: options.size)
 let painter = KomaPainter(name: options.name, isPromoted: options.promoted)
 painter.draw(on: ctx, in: rect)
 
